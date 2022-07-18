@@ -6,7 +6,7 @@ const date = Object.assign({}, def);
 
 date.isRight = true;
 
-date.compare = function (x, y, column) {
+date.compare = function(x, y, column) {
   function cook(d) {
     if (column && column.dateInputFormat) {
       return parse(`${d}`, `${column.dateInputFormat}`, new Date());
@@ -24,11 +24,16 @@ date.compare = function (x, y, column) {
   return compareAsc(x, y);
 };
 
-date.format = function (v, column) {
+date.format = function(v, column) {
   if (v === undefined || v === null) return "";
   if (column.convertUtcToLocal) {
     const date = parse(
-      moment.utc(v).local().format(column.dateInputFormat.replace("dd", "DD")),
+      moment
+        .utc(v)
+        .local()
+        .format(
+          column.dateInputFormat.replace("dd", "DD").replace("yyyy", "YYYY")
+        ),
       column.dateInputFormat,
       new Date()
     );
