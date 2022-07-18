@@ -1,7 +1,5 @@
 import { format, parse, isValid, compareAsc } from "date-fns";
 import def from "./default";
-import moment from "moment";
-
 const date = Object.assign({}, def);
 
 date.isRight = true;
@@ -26,31 +24,25 @@ date.compare = function(x, y, column) {
 
 date.format = function(v, column) {
   if (v === undefined || v === null) return "";
+  let date;
+
   if (column.convertUtcToLocal) {
-    const date = parse(
-      moment
-        .utc(v)
-        .local()
-        .format(
-          column.dateInputFormat.replace("dd", "DD").replace("yyyy", "YYYY")
-        ),
+    const localDate = new Date(v + " UTC");
+    date = parse(
+      format(localDate, column.dateInputFormat),
       column.dateInputFormat,
       new Date()
     );
-
-    if (isValid(date)) {
-      return format(date, column.dateOutputFormat);
-    }
   } else {
-    const date = parse(v, column.dateInputFormat, new Date());
-    if (isValid(date)) {
-      return format(date, column.dateOutputFormat);
-    } else {
-      console.error(`Not a valid date: "${v}"`);
-      return "Invalid date format";
-    }
+    date = parse(v, column.dateInputFormat, new Date());
   }
-  return null;
+
+  if (isValid(date)) {
+    return format(date, column.dateOutputFormat);
+  } else {
+    console.error(`Not a valid date: "${v}"`);
+    return "Invalid date format";
+  }
 };
 
 export default date;
