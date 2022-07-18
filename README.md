@@ -1,6 +1,5 @@
 
 # custom-edit
- - added momentjs for custom use.
  - columnOption for date "convertUtcToLocal:Boolean" added.
 # Vue-good-table
 
