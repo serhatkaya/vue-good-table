@@ -1,5 +1,6 @@
-import { format, parse, isValid, compareAsc } from 'date-fns';
-import def from './default';
+import { format, parse, isValid, compareAsc } from "date-fns";
+import def from "./default";
+import moment from "moment";
 
 const date = Object.assign({}, def);
 
@@ -24,13 +25,26 @@ date.compare = function (x, y, column) {
 };
 
 date.format = function (v, column) {
-  if (v === undefined || v === null) return '';
-  // convert to date
-  const date = parse(v, column.dateInputFormat, new Date());
-  if (isValid(date)) {
-    return format(date, column.dateOutputFormat);
+  if (v === undefined || v === null) return "";
+  if (column.convertUtcToLocal) {
+    const date = parse(
+      moment.utc(v).local().format(column.dateInputFormat.replace("dd", "DD")),
+      column.dateInputFormat,
+      new Date()
+    );
+
+    if (isValid(date)) {
+      return format(date, column.dateOutputFormat);
+    }
+  } else {
+    const date = parse(v, column.dateInputFormat, new Date());
+    if (isValid(date)) {
+      return format(date, column.dateOutputFormat);
+    } else {
+      console.error(`Not a valid date: "${v}"`);
+      return "Invalid date format";
+    }
   }
-  console.error(`Not a valid date: "${v}"`);
   return null;
 };
 

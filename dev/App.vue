@@ -1,12 +1,12 @@
 <template>
   <div>
     {{ selectedIds }}
-    <button @click="rows = [];">empty row</button>
+    <button @click="rows = []">empty row</button>
     <button @click="resetTable">reset Table</button>
     <button @click="hideColumn">hide column</button>
     <button @click="setFilter">SetFilter</button>
     <button @click="changePage">Change Page</button>
-    <input type="text" v-model="searchTerm">
+    <input type="text" v-model="searchTerm" />
     <vue-good-table
       ref="my-table"
       @on-column-filter="onColumnFilter"
@@ -33,30 +33,27 @@
       :search-options="{
         enabled: true,
         skipDiacritics: true,
-      }">
+      }"
+    >
     </vue-good-table>
-    <h3>Remote Table</h3>
-    <remote-table/>
-    <h3>Grouped Table</h3>
-     <grouped-table></grouped-table>
   </div>
 </template>
 
 <script>
-import GroupedTable from './grouped-table.vue';
-import RemoteTable from './remote-table.vue';
-
+import GroupedTable from "./grouped-table.vue";
+import RemoteTable from "./remote-table.vue";
+import rowdata from "./data.json";
 export default {
-  name: 'test',
+  name: "test",
   data() {
     return {
       currentPage: 1,
       selectedIds: [],
-      rowStyleClass: 'red',
-      searchTerm: '',
+      rowStyleClass: "red",
+      searchTerm: "",
       paginationOptions: {
         enabled: true,
-        mode: 'records',
+        mode: "records",
         perPage: 3,
         perPageDropdown: [3, 5, 10, 200, 300, 500, 1000],
         perPageDropdownEnabled: true,
@@ -65,177 +62,49 @@ export default {
       },
       columns: [
         {
-          label: 'Name',
-          field: 'name',
-          width: '200px',
+          label: "First Name",
+          field: "firstName",
           filterOptions: {
-            enabled: true,
-            placeholder: 'All',
-            trigger: 'enter',
-            // filterDropdownItems: ['Chris', 'Dan', 'Susan'],
-            // filterValue: 'Chris',
+            styleClass: "", // class to be added to the parent th element
+            enabled: true, // enable filter for this column
+            // placeholder: "First Name Filter", // placeholder for filter input
+            // filterValue: "Jane", // initial populated value for this filter
+            filterDropdownItems: [], // dropdown (with selected values) instead of text input
+            // filterFn: this.columnFilterFn, //custom filter function that
+            // trigger: "enter", //only trigger on enter not on keyup
           },
         },
         {
-          label: 'Age',
-          field: 'age',
-          type: 'number',
-          tooltip: 'Age tooltip',
-          firstSortType: 'desc',
-          filterOptions: {
-            enabled: true,
-            // filterDropdownItems: ['24', '16', '30'],
-            styleClass: 'class1',
-            trigger: 'enter',
-            // filterDropdownItems: [
-            //   {
-            //     value: 24,
-            //     text: '24',
-            //   },
-            //   {
-            //     value: 16,
-            //     text: '16',
-            //   },
-            // ],
-          },
-        },
-        {
+          label: "Last Name",
+          field: "lastName",
           filterOptions: {
             enabled: true,
           },
-          sortable: false,
-          label: 'Created On',
-          field: 'createdAt',
-          type: 'date',
-          dateInputFormat: 'yyyy-MM-dd',
-          dateOutputFormat: 'PPPP',
         },
         {
-          label: 'Percent',
-          field: 'score',
-          type: 'percentage',
-        },
-        {
-          label: 'func',
-          field: this.funcValue,
-          type: 'number',
-        },
-        {
-          label: 'Valid',
-          field: this.fieldValid,
-          type: 'boolean',
+          label: "Phone Nr.",
+          field: "phoneNr",
           filterOptions: {
             enabled: true,
-            filterDropdownItems: [
-              true,
-              false,
-            ],
           },
         },
         {
-          label: 'Exact',
-          field: this.fieldExact,
+          label: "City",
+          field: "city",
           filterOptions: {
             enabled: true,
-            filterDropdownItems: [
-              'match',
-              'rematch',
-            ],
           },
-        }
-      ],
-      rows: [
-        // { id:1, name:"John", age: 20, createdAt: '2018-02-18T00:00:43-05:00',score: 0.03343 },
-        {
-          id: 2,
-          name: 'Jane',
-          age: 24,
-          createdAt: '2011-10-31',
-          score: 0.03343,
-          bool: true,
-          exact: 'match',
-          average: 1
         },
         {
-          id: 3,
-          name: 'Angel',
-          age: 16,
-          createdAt: '2011-10-30',
-          score: 0.03343,
-          bool: true,
-          exact: 'match',
-          average: null
-        },
-        {
-          id: 4,
-          name: 'Chris',
-          age: 55,
-          createdAt: '2011-10-11',
-          score: 0.03343,
-          bool: false,
-          exact: null
-        },
-        {
-          id: 5,
-          name: 'Dan',
-          age: 40,
-          createdAt: '',
-          score: 0.03343,
-          bool: null,
-          exact: 'rematch',
-          average: 2
-        },
-        {
-          id: 5,
-          name: '193.23',
-          age: 20,
-          createdAt: null,
-          score: 0.03343,
-          bool: null,
-          exact: 'rematch',
-          average: 3
-        },
-        {
-          id: 5,
-          name: 'Dan',
-          age: 34,
-          createdAt: null,
-          score: 0.03343,
-          bool: null,
-          exact: null,
-          average: 2
-        },
-        {
-          id: 6,
-          name: 'John',
-          age: 20,
-          createdAt: '2011-10-31',
-          score: 0.03343,
-          bool: true,
-          exact: 'match',
-          average: 1.5
-        },
-        {
-          id: 7,
-          name: 'Ángel',
-          age: 20,
-          createdAt: '2013-09-21',
-          score: null,
-          bool: 'false',
-          exact: null,
-          average: 1
-        },
-        {
-          id: 8,
-          name: 'Susan',
-          age: 16,
-          createdAt: '2013-10-31',
-          score: 0.03343,
-          bool: true,
-          exact: 'rematch',
-          average: 1
+          label: "Created at",
+          field: "created_at",
+          type: "date",
+          dateInputFormat: "yyyy-MM-dd HH:mm:ss", // expects 2018-03-16
+          dateOutputFormat: "dd/MM/yyyy HH:mm", // outputs Mar 16th 2018
+          convertUtcToLocal: true,
         },
       ],
+      rows: rowdata,
     };
   },
   methods: {
@@ -247,25 +116,25 @@ export default {
     },
     changePage() {
       this.currentPage += 1;
-      this.$set(this.paginationOptions, 'setCurrentPage', this.currentPage);
+      this.$set(this.paginationOptions, "setCurrentPage", this.currentPage);
     },
     funcValue(row) {
       return row.age + 5;
     },
     tdClassFunc(row) {
       if (row.age > 50) {
-        return 'red';
+        return "red";
       }
-      return 'green';
+      return "green";
     },
     getRowStyle() {
-      return '';
+      return "";
     },
     hideColumn() {
-      this.$set(this.columns[0], 'hidden', true);
+      this.$set(this.columns[0], "hidden", true);
     },
     resetTable() {
-      this.$refs['my-table'].reset();
+      this.$refs["my-table"].reset();
     },
     onSelectAll(params) {
       console.log(params);
@@ -281,7 +150,7 @@ export default {
     },
     unselectAll() {
       for (let i = 0; i < this.rows.length; i++) {
-        this.$set(this.rows[i], 'selected', false);
+        this.$set(this.rows[i], "selected", false);
       }
     },
     toggleSelectRow(params) {
@@ -293,7 +162,7 @@ export default {
       // }
     },
     selectCell(params) {
-      console.log('select cell called');
+      console.log("select cell called");
       console.log(params);
     },
     searchedRow(params) {
@@ -301,7 +170,7 @@ export default {
     },
     setFilter() {
       // this.columns[0].filterOptions.filterValue = 'John';
-      this.$set(this.columns[0].filterOptions, 'filterValue', 'Chris');
+      this.$set(this.columns[0].filterOptions, "filterValue", "Chris");
       // const column1 = JSON.parse(JSON.stringify(this.columns[0]));
       // column1.filterOptions.filterValue = 'John';
       // this.$set(this.columns, 0, column1);
@@ -317,32 +186,32 @@ export default {
       // });
     },
     autofilter(type) {
-      if (type === 'name') {
-        this.columns[0].filterOptions.filterValue = 'John';
+      if (type === "name") {
+        this.columns[0].filterOptions.filterValue = "John";
       }
-      if (type === 'age') {
-        this.columns[1].filterOptions.filterValue = '>30';
+      if (type === "age") {
+        this.columns[1].filterOptions.filterValue = ">30";
       }
-      if (type === 'reset') {
-        this.columns[0].filterOptions.filterValue = '';
-        this.columns[1].filterOptions.filterValue = '';
+      if (type === "reset") {
+        this.columns[0].filterOptions.filterValue = "";
+        this.columns[1].filterOptions.filterValue = "";
         // this.columns[1].filterOptions.filterValue = null;
       }
     },
 
     filterAge(data, filterString) {
-      if ((filterString === '>30') && (parseInt(data, 10) > 30)) {
+      if (filterString === ">30" && parseInt(data, 10) > 30) {
         return true;
       }
-      if ((filterString === '<=30') && (parseInt(data, 10) <= 30)) {
+      if (filterString === "<=30" && parseInt(data, 10) <= 30) {
         return true;
       }
       return false;
     },
 
     onClick() {
-      console.log('clicked');
-      this.rowStyleClass = 'green';
+      console.log("clicked");
+      this.rowStyleClass = "green";
     },
     addRow() {
       this.rows.push({
@@ -351,7 +220,7 @@ export default {
       });
     },
     editRow() {
-      this.$set(this.rows[12], 'age', 300);
+      this.$set(this.rows[12], "age", 300);
     },
     sortFn(x, y, col) {
       if (x < y) {
@@ -366,7 +235,7 @@ export default {
       return `lala${value}lala`;
     },
     addFilter() {
-      this.$set(this.columns[2], 'filterValue', 'Jane');
+      this.$set(this.columns[2], "filterValue", "Jane");
       console.log(this.columns);
     },
 
@@ -374,36 +243,36 @@ export default {
     // ===================================================
     onPerPageChange(evt) {
       // { currentPage: 1, currentPerPage: 10, total: 5 }
-      console.log('per-page-changed:');
+      console.log("per-page-changed:");
       console.log(evt);
     },
 
     onPageChange(evt) {
       // { currentPage: 1, currentPerPage: 10, total: 5 }
-      console.log('page-changed:');
+      console.log("page-changed:");
       console.log(evt);
     },
 
     onColumnFilter(params) {
       // { currentPage: 1, currentPerPage: 10, total: 5 }
-      console.log('on-column-filters:');
+      console.log("on-column-filters:");
       console.log(params);
     },
 
     onSearch(params) {
-      console.log('on-search:');
+      console.log("on-search:");
       console.log(params);
     },
 
     onSortChange(params) {
-      console.log('on-sort-change:');
+      console.log("on-sort-change:");
       console.log(params);
       const [nameFilter] = params;
-      console.log(typeof nameFilter.field === 'function');
+      console.log(typeof nameFilter.field === "function");
     },
 
     onRowClick(params) {
-      console.log('on-row-click');
+      console.log("on-row-click");
       console.log(params);
     },
 
@@ -426,26 +295,26 @@ export default {
     //   });
   },
   components: {
-    'grouped-table': GroupedTable,
+    "grouped-table": GroupedTable,
     RemoteTable,
   },
 };
 </script>
 
 <style lang="css">
-  .row-style{
-    background-color: red;
-  }
-  *{
-    font-family: 'Open Sans';
-  }
-  .red{
-    background-color: red;
-  }
-  .green{
-    background-color: green;
-  }
-  /* .vgt-selection-info-row.info-custom{
+.row-style {
+  background-color: red;
+}
+* {
+  font-family: "Open Sans";
+}
+.red {
+  background-color: red;
+}
+.green {
+  background-color: green;
+}
+/* .vgt-selection-info-row.info-custom{
     background: red;
   } */
 </style>
